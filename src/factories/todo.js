@@ -8,6 +8,15 @@ export class Todo{
         // this.dueDate = format(new Date(), 'dd-MMM-yyyy');
         this.priority = PRIORITY_LEVEL["Medium"];
     }
+    changeTitle(newTitle){
+        this.title = newTitle;
+    }
+    changeDescription(newDescription){
+        this.description = newDescription;
+    }
+    changePriority(level){
+        this.priority = PRIORITY_LEVEL[level];
+    }
 }
 
 const PRIORITY_LEVEL = {
