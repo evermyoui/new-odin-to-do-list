@@ -1,24 +1,40 @@
 import { Project } from "../factories/project.js";
 
-const projects = [];
+export const todoDependencies = (()=> {
+    const defaultProject = {
+        id: "default",
+        title: "Default Project",
+        get todos(){
+            return todoDependencies.projects.flatMap(project => project.todos);
+        }
+    }
+    const projects = [defaultProject];
 
-export const addProject = (title) => {
-    const project = new Project(title);
-    projects.push(project);
+    return {
+        defaultProject,
+        projects
+    }
+})();
+
+const createProject = (title) => {
+    todoDependencies.projects.push(new Project(title));
 }
 
-export const changeDueDate = (projectId, date) => {
-    const project = projects.find(project => project.id === projectId);
-    if(!project) return;
-    project.dueDate = date;
+const deleteProject = (projectId) => {
+    const project = todoDependencies.projects.find(project => project.id === projectId);
+    if (project){
+        const todosDelete = [...project.todos];
+        todosDelete.forEach(todo => deleteTodo(todo.id));
+
+        const index = todoDependencies.folders.indexOf(project);
+        todoDependencies.folders.splice(index, 1);
+    }
+
+}
+const getTodo = (todoId) => {
+    return todoDependencies.defaultProject.todos.find(todo => todo.id === todoId);
 }
 
-export const getProjects = () => {
-    return projects;
-}
-
-export const removeProject = (projectId) => {
-    const index = projects.findIndex(project => project.id === projectId);
-    if (index === -1) return;
-    projects.splice(index, 1);
+export const getProject = (projectId) => {
+    return todoDependencies.projects.find(project => project.id === projectId);
 }

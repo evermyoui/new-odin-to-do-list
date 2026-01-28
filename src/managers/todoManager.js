@@ -1,15 +1,22 @@
-import { Todo } from "../factories/todo.js";
-const todos = [];
+import { Todo } from "../factories/todo.js"
+import { todoDependencies } from "./projectManager.js";
 
-export function addTodo(title){
-    const todo = new Todo(title);
-    todos.push(todo);
+const createTodo = ({title, description, priority}, projectId = null) => {
+    const todo = new Todo(title, description, priority);
+
+    if(projectId){
+        const project = todoDependencies.projects.find(project => project.id === projectId);
+        if (project) project.todos.push(todo);
+    }
+    return todo;
 }
-export function getTodos(){
-    return todos;
-}
-export const removeTodo = (todoId) => {
-    const index = todos.findIndex(todo => todo.id === todoId);
-    if (index === -1) return;
-    todos.splice(index, 1);
+
+const deleteTodo = (todoId) => {
+    const project = todoDependencies.projects
+        .find(project => project.todos
+        .some(todo => todo.id === todoId));
+    if (!project) return;
+
+    const index = project.todos.findIndex(todo => todo.id === todoId);
+    project.todos.splice(index, 1);
 }
