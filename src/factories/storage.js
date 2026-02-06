@@ -13,13 +13,13 @@ const storageAvail = (type) => {
         return false;
     }
 }
-const populateStorage = () => {
+export const populateStorage = () => {
     if (storageAvail("localStorage")){
         localStorage.setItem("todoDatas", JSON.stringify(todoDependencies.projects.filter(project => project.id !== "default")));
     }
 }
 
-const populateDependencies = () => {
+export const populateDependencies = () => {
     if (storageAvail("localStorage")){
         if (localStorage.getItem("todoDatas")== null){
             populateStorage();

@@ -15,7 +15,7 @@ export const addTextToElem = (element, text) => {
     elem.textContent = text;
 }
 
-export const clearDisplay = () => {
+export const clearDisplay = (element) => {
     const elem = document.querySelector(element);
     const childrenCount = elem.children.length;
     for (let i = 0; i < childrenCount; i += 1) {

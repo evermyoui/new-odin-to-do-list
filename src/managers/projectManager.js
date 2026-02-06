@@ -1,4 +1,5 @@
 import { Project } from "../factories/project.js";
+import { populateStorage } from "../factories/storage.js";
 
 export const todoDependencies = (()=> {
     const defaultProject = {
@@ -16,11 +17,12 @@ export const todoDependencies = (()=> {
     }
 })();
 
-const createProject = (title) => {
+export const createProject = (title) => {
     todoDependencies.projects.push(new Project(title));
+    populateStorage();
 }
 
-const deleteProject = (projectId) => {
+export const deleteProject = (projectId) => {
     const project = todoDependencies.projects.find(project => project.id === projectId);
     if (project){
         const todosDelete = [...project.todos];
@@ -29,9 +31,9 @@ const deleteProject = (projectId) => {
         const index = todoDependencies.folders.indexOf(project);
         todoDependencies.folders.splice(index, 1);
     }
-
+    populateStorage();
 }
-const getTodo = (todoId) => {
+export const getTodo = (todoId) => {
     return todoDependencies.defaultProject.todos.find(todo => todo.id === todoId);
 }
 
